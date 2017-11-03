@@ -1,13 +1,29 @@
+#include "stdafx.h"
 #include<iostream>
-#include <utility>
 #include<sstream>
 
-using namespace std ;
+using namespace std;
 
+void sort(int * array, unsigned int size)
+{
+	bool sucsess = false;
+	for (unsigned int i = 0; (!sucsess) && i < (size-1); i++)
+	{
+		sucsess = true;
+		for (unsigned int j = 0; j < (size-1) - i; j++)
+		{
+			if (array[j] > array[j + 1])
+			{
+				sucsess = false;
+				swap(array[j], array[j + 1]); 
+			}
+		}
+	}
+}
 bool read(int * array, unsigned int size)
 {
 	string mas;
-	unsigned int i = 0 , array_count=0;
+	unsigned int i = 0, array_count = 0;
 	getline(cin, mas);
 	istringstream stream(mas);
 	for (i; i < size; i++)
@@ -17,28 +33,9 @@ bool read(int * array, unsigned int size)
 			array_count++;
 		}
 	}
-	if (array_count ==size && stream.eof()) return true;
+	if (array_count == size && stream.eof()) return true;
 	else return false;
 }
-
-void sort (int * array ,unsigned int size)
-{
-	for(unsigned int i = 1 ; i < size ; i++ )
-	{
-		for(unsigned int j = (i-1) ; j >= 0; j-- )
-		{
-			if(array[j+1] < array [j])
-			{
-				swap(array[j+1] , array[j]);
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
-}
-
 void print(int * array, unsigned int size)
 {
 	for (unsigned int i = 0; i < size; i++)
@@ -47,24 +44,43 @@ void print(int * array, unsigned int size)
 	}
 }
 
-int main () 
+bool size_s(unsigned int &size)
 {
-	unsigned int size ; 
-	int * array ;	
-	cin >> size ;
-	cin.get();
-	array = new int [size];
-	if(read(array, size))
-	{ 
-		sort(array, size);
-		print(array, size);
-		cin.get();
+	string str;
+	getline(cin, str);
+	istringstream stream(str);
+	if (!(stream >> size) )
+	{
+		return false;
 	}
 	else
 	{
-		cout << "fail input ";
-		cin.get();
+		if (stream.eof()) { return true; }
+		else { return false; }
 	}
-	delete [] array;
-    return 0;
+
+}
+int main()
+{
+	unsigned int size;
+	if (size_s(size))
+	{
+		int * array;
+		array = new int[size];
+		if (read(array, size))
+		{
+			sort(array, size);
+			print(array, size);
+			cin.get();
+		}
+		else
+		{
+			cout << "fail input ";
+			cin.get();
+		}
+		delete[] array;
+	}
+	else { cout << "size error"; }
+	cin.get();
+	return 0;
 }
