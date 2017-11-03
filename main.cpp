@@ -1,30 +1,30 @@
 #include "stdafx.h"
-#include < iostream>
-#include <utility>
+#include<iostream>
 #include<sstream>
+
 using namespace std;
-void selection_sort(double * array , unsigned int size)
+
+void sort(int * array, unsigned int size)
 {
-	for (unsigned int i = 0; i < size; i++)
+	for (unsigned int i = 1; i < size; i++)
 	{
-		unsigned int min=i;
-		for (unsigned int j = i + 1; j < size; j++)
+		for (int j = i - 1; j >=0; j--)
 		{
-			if (array[min] > array[j])
+			if (array[j] > array[j + 1]) 
 			{
-				min=j ;
+				swap(array[j], array[j + 1]);
 			}
-		}
-		if (array[i] > array[min])
-		{
-			swap(array[i], array[min]);
+			else 
+			{
+				break;
+			}
 		}
 	}
 }
-bool read(double * array, unsigned int size)
+bool read(int * array, unsigned int size)
 {
 	string mas;
-	unsigned int i = 0 , array_count=0;
+	unsigned int i = 0, array_count = 0;
 	getline(cin, mas);
 	istringstream stream(mas);
 	for (i; i < size; i++)
@@ -34,16 +34,17 @@ bool read(double * array, unsigned int size)
 			array_count++;
 		}
 	}
-	if (array_count ==size && stream.eof()) return true;
+	if (array_count == size && stream.eof()) return true;
 	else return false;
 }
-void print(double * array, unsigned int size)
+void print(int * array, unsigned int size)
 {
 	for (unsigned int i = 0; i < size; i++)
 	{
 		cout << array[i] << " ";
 	}
 }
+
 bool size_s(unsigned int &size)
 {
 	string str;
@@ -59,17 +60,16 @@ bool size_s(unsigned int &size)
 		else { return false; }
 	}
 }
-
 int main()
 {
-	double * array;
 	unsigned int size;
-	if (size_s(size)) 
+	if (size_s(size))
 	{
-		array = new double[size];
+		int * array;
+		array = new int[size];
 		if (read(array, size))
 		{
-			selection_sort(array, size);
+			sort(array, size);
 			print(array, size);
 			cin.get();
 		}
@@ -80,6 +80,6 @@ int main()
 		}
 		delete[] array;
 	}
-	else { cout << "size error";cin.get(); }
-    return 0;
+	else { cout << "size error"; cin.get(); }
+	return 0;
 }
